@@ -3,14 +3,11 @@ import platform
 import platform
 import time
 import cowsay
-
-
-
-
+from termcolor import colored
 
 
 def welcome_setup():
-
+    print('')
     logo = [
         "      /\\",
         "     /  \\",
@@ -36,7 +33,8 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-        print(left.ljust(max_logo_width + 4) + right)
+        print(colored(left.ljust(max_logo_width + 4), 'blue') + right)
+    print('')
 
 def setup_locale():
     print('Setup locales...', end='', flush=True)

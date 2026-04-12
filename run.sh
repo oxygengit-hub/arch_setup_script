@@ -20,4 +20,4 @@ if [ -f "requirements.txt" ]; then
 fi
 echo ""
 echo "Let's go!"
-"$VENV_DIR/bin/python" script.vpy
+"$VENV_DIR/bin/python" script.py

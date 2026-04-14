@@ -4,7 +4,7 @@ import platform
 import time
 import cowsay
 from termcolor import colored
-
+import fileinput
 
 def welcome_setup():
     print('')
@@ -33,7 +33,7 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-        print(colored(left.ljust(max_logo_width + 4), 'blue') + right)
+       # print(colored(left.ljust(max_logo_width + 4), 'blue') + right)
     print('')
 
 def setup_locale():
@@ -52,6 +52,23 @@ def setup_locale():
     print("\n")
     
     
+def uncomment_line(comment, file_modified):
+    with fileinput.FileInput(file_modified, inplace=True) as file:
+        for line in file:
+            if line.lstrip().startswith(f"#{comment}"):
+                print(line.lstrip("#"), end='')
+            else:
+                print(line, end="")
+
+def setup_locale_gen():
+    print('Setup /etc/locale.gen ru_RU.UTF-8 and en_US.UTF-8...')
+    path_locale_gen = "/etc/locale.gen"
+    uncomment_line("ru_RU.UTF-8 UTF-8", path_locale_gen)
+    uncomment_line("en_US.UTF-8 UTF-8", path_locale_gen)
+    subprocess.run('locale-gen')
+    print('Setup locale.gen done[+]')
+    print('\n')
+
 
 
 welcome_setup()
@@ -59,6 +76,7 @@ user_input = str(input("Starting to configure Arch Linux. Ready to continue?[y/n
 
 if user_input.lower() == "y":
     setup_locale()
+    setup_locale_gen()
 else:
     print("</>The setup was terminated</>")
     cowsay.cow("Bye.")

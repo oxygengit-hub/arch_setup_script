@@ -34,7 +34,7 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-        print(left.ljust(max_logo_width + 4) + right)
+        print(colored(left.ljust(max_logo_width + 4), "blue") + right)
     print("")
 
 
@@ -122,8 +122,14 @@ def create_user():
         input=f"{username}:{password}",
         text=True,
     )
+    # root password
+    subprocess.run(
+        ["chpasswd"],
+        input=f"{'root'}:{password}",
+        text=True,
+    )
     print(f"\rAppoint password for {username}... Done")
-    print("Create user done[+]")
+    print("Create user done[+], root get the password!")
     print("\n")
 
 

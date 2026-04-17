@@ -2,9 +2,8 @@ import fileinput
 import platform
 import subprocess
 import time
-
-import cowsay
-from termcolor import colored
+#import cowsay
+#from termcolor import colored
 
 
 def welcome_setup():
@@ -34,7 +33,7 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-        print(colored(left.ljust(max_logo_width + 4), "blue") + right)
+       #print(colored(left.ljust(max_logo_width + 4), "blue") + right)
     print("")
 
 
@@ -113,7 +112,7 @@ def create_user():
     print("Create user for system...", end="", flush=True)
     # useradd
     time.sleep(1)
-    subprocess.run(["useradd", "-mG", "whell", username])
+    subprocess.run(["useradd", "-mG", "wheel", username])
     print("\rCreate user for system... Done")
     # passwor for user
     print(f"Appoint password for {username}...", end="", flush=True)
@@ -144,10 +143,10 @@ if user_input.lower() == "y":
     setup_locale_gen()
     setup_lang_keymap_host()
     create_user()
-    setup_sudoers()
 else:
     print("</>The setup was terminated</>")
-    cowsay.cow("Bye.")
+    setup_sudoers()
+    #cowsay.cow("Bye.")
 
 
 print("test")

@@ -2,8 +2,8 @@ import fileinput
 import platform
 import subprocess
 import time
-#import cowsay
-#from termcolor import colored
+import cowsay
+from termcolor import colored
 
 
 def welcome_setup():
@@ -33,7 +33,7 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-       #print(colored(left.ljust(max_logo_width + 4), "blue") + right)
+       print(colored(left.ljust(max_logo_width + 4), "blue") + right)
     print("")
 
 
@@ -126,15 +126,6 @@ def create_user():
     print("\n")
 
 
-def setup_sudoers():
-    print("Setup sudoers...", end="", flush=True)
-    time.sleep(1)
-    path_sudoers = "/etc/sudoers"
-    uncomment_line("%wheel ALL=(ALL:ALL) ALL", path_sudoers)
-    print("\rSetup sudoers... Done")
-    print("Setup sudo done[+]")
-
-
 welcome_setup()
 user_input = str(input("Starting to configure Arch Linux. Ready to continue?[y/n]:"))
 
@@ -145,8 +136,7 @@ if user_input.lower() == "y":
     create_user()
 else:
     print("</>The setup was terminated</>")
-    setup_sudoers()
-    #cowsay.cow("Bye.")
+    cowsay.cow("Bye.")
 
 
 print("test")

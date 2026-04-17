@@ -2,6 +2,7 @@ import fileinput
 import platform
 import subprocess
 import time
+
 import cowsay
 from termcolor import colored
 
@@ -33,7 +34,7 @@ def welcome_setup():
         time.sleep(0.1)
         right = info[i] if i < len(info) else ""
 
-       print(colored(left.ljust(max_logo_width + 4), "blue") + right)
+        print(left.ljust(max_logo_width + 4) + right)
     print("")
 
 

@@ -1,9 +1,10 @@
 echo "Updating system..."
 pacman -Syu --noconfirm
 echo "Done[+]"
-echo "Installing Python..."
-pacman -S python --noconfirm
+echo "Installing required packages..."
+pacman -S python sudo networkmanager --noconfirm
 echo "Done[+]"
+
 
 VENV_DIR=".venv"
 

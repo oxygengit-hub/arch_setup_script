@@ -99,9 +99,41 @@ def setup_lang_keymap_host():
     print("Setup arch > /etc/hostname...", end="", flush=True)
     time.sleep(1)
     path_host_conf = "/etc/hostname"
-    host_file = create_config_file(path_host_conf)
+    host_file = clreate_config_file(path_host_conf)
     subprocess.run(["echo", "arch"], stdout=host_file)
+    print("\rSetup arch > /etc/hostname... Done")
+    print("Setup locale, keymap, host done[+]")
+    print('\n')
 
+def create_user():
+    username = 'oxygen'
+    password = 'darok2007'
+    
+    print('Create user for system...', end='', flush=True)
+    #useradd
+    time(1)
+    subprocess.run(
+            ['useradd', '-mG', 'whell', username]
+    )
+    print('\rCreate user for system... Done')
+    #passwor for user
+    print(f'Appoint password for {username}...', end='', flush=True)
+    subprocess.run(
+            ["chpasswd"],
+            input=f"{username}:{password}",
+            text=True,
+    )
+    print(f'\rAppoint password for {username}... Done')
+    print('Create user done[+]')
+    print('\n')
+
+def setup_sudoers():
+    print('Setup sudoers...', end='', flush=True)
+    time(1)
+    path_sudoers = '/etc/sudoers'
+    uncomment_line('%wheel ALL=(ALL:ALL) ALL', path_sudoers)
+    print('\rSetup sudoers... Done')
+    print('Setup sudo done[+]')
 
 welcome_setup()
 user_input = str(input("Starting to configure Arch Linux. Ready to continue?[y/n]:"))
@@ -109,9 +141,11 @@ user_input = str(input("Starting to configure Arch Linux. Ready to continue?[y/n
 if user_input.lower() == "y":
     setup_locale()
     setup_locale_gen()
+    setup_lang_keymap_host()
+    create_user()
+    setup_sudoers()
 else:
     print("</>The setup was terminated</>")
-    setup_lang_keymap_host()
     cowsay.cow("Bye.")
 
 

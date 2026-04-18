@@ -141,7 +141,7 @@ def setup_grub():
     subprocess.run(['mkdir', "/boot/efi"])
     print('\rmkdir /boot/efi...Done')
 
-    output_lsblk = subprocess.run(['lsblk'], capture_output=True, text=True)
+    output_lsblk = subprocess.run(['lsblk', '-d', '-n', '-o', 'NAME'], capture_output=True, text=True)
     dev_name = str(output_lsblk)[101:104]
     print(f"mount /dev/{dev_name} > /boot/efi...", flush=True, end='')
     time.sleep(1)

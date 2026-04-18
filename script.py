@@ -141,12 +141,12 @@ def setup_grub():
     subprocess.run(['mkdir', "/boot/efi"])
     print('\rmkdir /boot/efi...Done')
 
-    output_lsblk = subprocess.run(['lsblk', '-d', '-n', '-o', 'NAME', '|', 'grep', 'sd'], capture_output=True, text=True)
-    dev_name = str(output_lsblk)[101:104]
-    print(f"mount /dev/{dev_name} > /boot/efi...", flush=True, end='')
+    output_lsblk = subprocess.run('lsblk -d -n -o NAME | grep sd', shell=True, capture_output=True, text=True)
+    dev_name = output_lsblk.stdout[:3]
+    print(f"mount /dev/{dev_name}1 > /boot/efi...", flush=True, end='')
     time.sleep(1)
     subprocess.run(['mount', f'dev/{dev_name}1', '/boot/efi'])
-    print(f'\rmount /dev/{dev_name} > /boot/eif...Done')
+    print(f'\rmount /dev/{dev_name}1 > /boot/efi...Done')
 
 
     print('grub-install...', flush=True, end='')

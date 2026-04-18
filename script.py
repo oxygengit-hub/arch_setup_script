@@ -122,15 +122,46 @@ def create_user():
         input=f"{username}:{password}",
         text=True,
     )
+    print(f"\rAppoint password for {username}... Done")
     # root password
+    print("Appoint password for root...", end="", flush=True)
     subprocess.run(
         ["chpasswd"],
         input=f"{'root'}:{password}",
         text=True,
     )
-    print(f"\rAppoint password for {username}... Done")
+    print("\rAppoint password for root... Done")
     print("Create user done[+], root get the password!")
     print("\n")
+
+
+def setup_grub():
+    print('mkdir /boot/efi...', flush=True, end='')
+    time.sleep(1)
+    subprocess.run(['mkdir', "/boot/efi"])
+    print('\rmkdir /boot/efi...Done')
+
+    output_lsblk = subprocess.run(['lsblk'], capture_output=True, text=True)
+    dev_name = str(output_lsblk)[101:104]
+    print(f"mount /dev/{dev_name} > /boot/efi...", flush=True, end='')
+    time.sleep(1)
+    subprocess.run(['mount', f'dev/{dev_name}1', '/boot/efi'])
+    print(f'\rmount /dev{dev_name} > /boot/eif...Done')
+
+
+    print('grub-install...', flush=True, end='')
+    time.sleep(1)
+    subprocess.run(['grub-install', '--target=x86_64-efi', '--efi-directory=/boot/efi', '--bootloader-id=GRUB'])
+    print('\rgrub-install...Done')
+
+
+    print("grub-mkconfig > /boot/grub/grub.cfg...", flush=True, end='')
+    time.sleep(1)
+    subprocess.run(["grub-mkconfig", '-o', '/boot/grub/grub.cfg'])
+    print('\rgrub-mkconfig > /boot/grub/grub.cfg...Done')
+    print('Setup grub done[+]')
+    print('\n')
+
 
 
 welcome_setup()
@@ -141,6 +172,11 @@ if user_input.lower() == "y":
     setup_locale_gen()
     setup_lang_keymap_host()
     create_user()
+    print('Raise NetworkManager...', flush=True, end='')
+    subprocess.run(['systemctl', 'enable', 'NetworkManager'])
+    time(1)
+    print("Raise NetworkManger...Done[+]")
+    setup_grub()
 else:
     print("</>The setup was terminated</>")
     cowsay.cow("Bye.")

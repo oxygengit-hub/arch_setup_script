@@ -2,7 +2,7 @@ echo "Updating system..."
 pacman -Syu --noconfirm
 echo "Done[+]"
 echo "Installing required packages..."
-pacman -S python sudo networkmanager --noconfirm
+pacman -S python sudo networkmanager grub efibootmgr dosfstools os-prober mtools --noconfirm
 echo "Done[+]"
 
 

@@ -174,7 +174,7 @@ if user_input.lower() == "y":
     create_user()
     print('Raise NetworkManager...', flush=True, end='')
     subprocess.run(['systemctl', 'enable', 'NetworkManager'])
-    time(1)
+    time.sleep(1)
     print("Raise NetworkManger...Done[+]")
     setup_grub()
 else:

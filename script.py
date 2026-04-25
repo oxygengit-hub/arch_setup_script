@@ -143,7 +143,7 @@ def setup_grub():
 
     output_lsblk = subprocess.run('lsblk -d -n -o NAME', shell=True, capture_output=True, text=True, check=True)
     
-    dev_name = output_lsblk.splitlines()[0]
+    dev_name = output_lsblk.stdout.splitlines()[0]
 
     if dev_name.startswith('nvme'):
         part = f'/dev/{dev_name}p1'
@@ -180,19 +180,16 @@ def setup_grub():
 welcome_setup()
 user_input = str(input("Starting to configure Arch Linux. Ready to continue?[y/n]:"))
 
-if user_input.lower() == "y":
-    setup_locale()
-    setup_locale_gen()
-    setup_lang_keymap_host()
-    create_user()
-    print('Raise NetworkManager...', flush=True, end='')
-    subprocess.run(['systemctl', 'enable', 'NetworkManager'])
-    time.sleep(1)
-    print("Raise NetworkManger...Done[+]")
-    setup_grub()
-else:
-    print("</>The setup was terminated</>")
-    cowsay.cow("Bye.")
+setup_locale()
+setup_locale_gen()
+setup_lang_keymap_host()
+create_user()
+print('Raise NetworkManager...', flush=True, end='')
+subprocess.run(['systemctl', 'enable', 'NetworkManager'])
+time.sleep(1)
+print("Raise NetworkManger...Done[+]")
+setup_grub()
+
 
 
 print("test")

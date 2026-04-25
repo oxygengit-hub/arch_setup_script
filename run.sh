@@ -1,5 +1,5 @@
 echo "Updating system..."
-pacman -Syu --noconfirm
+pacman -Syyu --noconfirm
 echo "Done[+]"
 echo "Installing required packages..."
 pacman -S python sudo networkmanager grub efibootmgr dosfstools os-prober mtools --noconfirm

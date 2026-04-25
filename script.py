@@ -138,26 +138,39 @@ def create_user():
 def setup_grub():
     print('mkdir /boot/efi...', flush=True, end='')
     time.sleep(1)
-    subprocess.run(['mkdir', "/boot/efi"])
+    subprocess.run(['mkdir', "/boot/efi"], check=True)
     print('\rmkdir /boot/efi...Done')
 
-    output_lsblk = subprocess.run('lsblk -d -n -o NAME | grep sd', shell=True, capture_output=True, text=True)
-    dev_name = output_lsblk.stdout[:3]
-    print(f"mount /dev/{dev_name}1 > /boot/efi...", flush=True, end='')
+    output_lsblk = subprocess.run('lsblk -d -n -o NAME', shell=True, capture_output=True, text=True, check=True)
+    
+    dev_name = output_lsblk.splitlines()[0]
+
+    if dev_name.startswith('nvme'):
+        part = f'/dev/{dev_name}p1'
+    else:
+        part = f'/dev/{dev_name}1'
+
+    print(f"mount {part} > /boot/efi...", flush=True, end='')
     time.sleep(1)
-    subprocess.run(['mount', f'dev/{dev_name}1', '/boot/efi'])
+
+    subprocess.run(['mount', part, '/boot/efi'], check=True)
     print(f'\rmount /dev/{dev_name}1 > /boot/efi...Done')
 
 
     print('grub-install...', flush=True, end='')
     time.sleep(1)
-    subprocess.run(['grub-install', '--target=x86_64-efi', '--efi-directory=/boot/efi', '--bootloader-id=GRUB'])
+    subprocess.run([
+        'grub-install',
+        '--target=x86_64-efi',
+        '--efi-directory=/boot/efi',
+        '--bootloader-id=GRUB'
+    ], check=True)
     print('\rgrub-install...Done')
 
 
     print("grub-mkconfig > /boot/grub/grub.cfg...", flush=True, end='')
     time.sleep(1)
-    subprocess.run(["grub-mkconfig", '-o', '/boot/grub/grub.cfg'])
+    subprocess.run(["grub-mkconfig", '-o', '/boot/grub/grub.cfg'], check=True)
     print('\rgrub-mkconfig > /boot/grub/grub.cfg...Done')
     print('Setup grub done[+]')
     print('\n')

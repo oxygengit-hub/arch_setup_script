@@ -135,16 +135,26 @@ def create_user():
     print("\n")
 
 
+def get_disk():
+    output_lsblk = subprocess.run('lsblk -d -n -o NAME,TYPE')
+
+    for line in output_lsblk.stdout.splitlines():
+        name, dev_type = line.split()
+
+        if dev_type == 'disk':
+            return name
+
+    raise RuntimeError("No disk device found")
+
+
+
 def setup_grub():
     print('mkdir /boot/efi...', flush=True, end='')
     time.sleep(1)
     subprocess.run(['mkdir', "/boot/efi"], check=True)
     print('\rmkdir /boot/efi...Done')
 
-    output_lsblk = subprocess.run('lsblk -d -n -o NAME', shell=True, capture_output=True, text=True, check=True)
-    
-    dev_name = output_lsblk.stdout.splitlines()[0]
-
+    dev_name = get_disk()
     if dev_name.startswith('nvme'):
         part = f'/dev/{dev_name}p1'
     else:
